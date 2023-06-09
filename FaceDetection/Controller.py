@@ -12,7 +12,7 @@ class Controller:
     def iniciar(self):
 
         print("BIENVENIDO AL JUEGO")
-        size = int(input("Ingrese el tamaño deseado para el tablero:"))
+        size = int(input("Ingrese el tamaño para el tablero:"))
         tablero = GameMap(size)
         player = Player()
         monster = Monster()
