@@ -1,7 +1,7 @@
-
+import Mediapipe
 class Player:
     def __init__(self):
-        self.life = 1
+        self.life = 40
         self.arms_inventory = []
         self.row = None
         self.col = None
@@ -57,8 +57,8 @@ class Player:
                 print(item)
 
     def attack(self, monster):
-        distance = abs(self.row - monster.row) + abs(self.col - monster.col)
-        if distance == 1 and self.arms_inventory:
+        move, mouth = Mediapipe.capture_look()
+        if mouth:
             print("Opciones de arma:")
             for i, weapon in enumerate(self.arms_inventory):
                 print(f"{i + 1}. {weapon}")
@@ -68,13 +68,19 @@ class Player:
                 selected_weapon = self.arms_inventory[int(selected_option) - 1]
                 damage = self.weapon_damage.get(selected_weapon, 0)
                 monster.life -= damage
-                self.life -= damage  # Restar el daño al jugador
                 print(f"Atacaste al monstruo con {selected_weapon} y le quitaste {damage} de vida.")
                 self.arms_inventory.remove(selected_weapon)  # Eliminar el arma del inventario del jugador
             else:
                 print("Opción de arma inválida.")
+
+
+    def check_attack(self,monster):
+        distance = abs(self.row - monster.row) + abs(self.col - monster.col)
+        if distance == 1 and len(self.arms_inventory) > 0:
+            return True
         else:
-            print("El monstruo no está cerca para atacar.")
+            return False
+
 
 
 

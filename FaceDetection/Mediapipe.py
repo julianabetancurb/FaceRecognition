@@ -3,12 +3,12 @@ import mediapipe as mp
 import numpy as np
 
 
-
 def capture_look():
     mp_face_mesh = mp.solutions.face_mesh
     face_mesh = mp_face_mesh.FaceMesh(min_detection_confidence=0.5, min_tracking_confidence=0.5)
     cap = cv2.VideoCapture(0)
     looking = None
+    mouth_open = False
     pressed_m = False
 
     while cap.isOpened() and not pressed_m:
@@ -50,7 +50,7 @@ def capture_look():
                         # Get the 3D Coordinates
                         face_3d.append([x, y, lm.z])
 
-                        # Convert it to the NumPy array
+                # Convert it to the NumPy array
                 face_2d = np.array(face_2d, dtype=np.float64)
 
                 # Convert it to the NumPy array
@@ -96,15 +96,26 @@ def capture_look():
                     looking = "forward"
                     text = "Forward"
 
-                # Display the text on the image
-                cv2.putText(image, text, (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
+                #DETECTAR BOCA ABIERTA
+                upper_lip_top = face_landmarks.landmark[13].y * img_h
+                lower_lip_bottom = face_landmarks.landmark[14].y * img_h
+                mouth_height = lower_lip_bottom - upper_lip_top
+
+                if mouth_height > 10:
+                    mouth_open = True
+                    text = "Mouth Open"
+
+                cv2.putText(image, text, (50,100 ), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
         cv2.imshow('Head Pose Estimation', image)
 
         if cv2.waitKey(1) & 0xFF == ord('m'):
-            pressed_m = True
+            return looking, mouth_open
 
     cap.release()
     cv2.destroyAllWindows()
 
-    return looking
+#capture_look()
+
+

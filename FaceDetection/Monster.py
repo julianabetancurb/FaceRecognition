@@ -30,7 +30,6 @@ class Monster:
                 elif self.row == player.row and self.col == player.col:
                     print("El mountro a atacado al jugador y le ha quitado 25 de vida!!!")
                     player.life -= 25  # Restar 25 de vida al jugador cuando el monstruo y el jugador están en la misma celda
-                    player.attack(self)  # Llamar al método attack() del jugador
                     self.move_away_from_player(game_map, player)
 
                 game_map.matrix[self.row][self.col] = self.monster_emoji

@@ -10,7 +10,6 @@ class Controller:
         pass
 
     def iniciar(self):
-
         print("BIENVENIDO AL JUEGO")
         size = int(input("Ingrese el tamaño para el tablero:"))
         tablero = GameMap(size)
@@ -23,7 +22,7 @@ class Controller:
         while perder:
             print("============PLAYER TURN============")
             print("Mueva su cabeza hacia donde se desea mover y presione la tecla m")
-            move = Mediapipe.capture_look()  # Asignar la dirección capturada a la variable 'move'
+            move, mouth = Mediapipe.capture_look()  # Asignar la dirección capturada a la variable 'move'
             if move is not None and move != "forward":
                 player.move_player(move, tablero)
             else:
@@ -39,13 +38,15 @@ class Controller:
             player.show_life_player()
             monster.show_life_monster()
             tablero.print_map()
-            player.attack(monster)
-            if monster.life <= 0:
-                print("el jugador gano!!!!")
-                perder = False
-            elif player.life <= 0:
-                print("el mounstro gano :(")
-                perder = False
+            if player.check_attack(monster):
+                print("Si quiere atacar al monstruo abra la boca y presione m")
+                player.attack(monster)
+            else:
+                print("Aun no puedes atacar al monstruo")
+
+
+
+
 
 controller = Controller()
 controller.iniciar()
