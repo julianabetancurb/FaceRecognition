@@ -1,5 +1,4 @@
 import time
-import keyboard
 from FaceDetection.Monster import Monster
 from FaceDetection.Player import Player
 from FaceDetection.Game import GameMap
@@ -8,7 +7,6 @@ class Controller:
 
     def __init__(self):
         pass
-
     def iniciar(self):
         print("BIENVENIDO AL JUEGO")
         size = int(input("Ingrese el tamaño para el tablero:"))
@@ -22,12 +20,11 @@ class Controller:
         while perder:
             print("============PLAYER TURN============")
             print("Mueva su cabeza hacia donde se desea mover y presione la tecla m")
-            move, mouth = Mediapipe.capture_look()  # Asignar la dirección capturada a la variable 'move'
+            move, mouth, arms = Mediapipe.capture_look()  # Asignar la dirección capturada a la variable 'move'
             if move is not None and move != "forward":
                 player.move_player(move, tablero)
             else:
                 print("No puedes moverte hacia el frente! intenta de nuevo..")
-
             player.print_inventory()
             player.show_life_player()
             monster.show_life_monster()
@@ -43,6 +40,13 @@ class Controller:
                 player.attack(monster)
             else:
                 print("Aun no puedes atacar al monstruo")
+
+            if monster.life <= 0:
+                print("el jugador gano!!!!")
+                perder = False
+            elif player.life <= 0:
+                print("el mounstro gano :(")
+                perder = False
 
 
 

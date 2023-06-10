@@ -3,7 +3,7 @@ from FaceDetection.Player import Player
 from FaceDetection.Monster import Monster
 class GameMap:
     def __init__(self, size: int):
-        self.arms: list = ["⛏","🔫", "💣", "🗡", "🏹", "🛠"]
+        self.arms: list = ["⛏","🔫", "🗡", "🏹", "🛠"]
         self.food: list = ["🍎", "🍉", "🍕", "🥗"]
         self.size = size
         self.matrix = [[None] * size for _ in range(size)]

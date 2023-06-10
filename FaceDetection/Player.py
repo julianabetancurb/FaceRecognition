@@ -9,7 +9,6 @@ class Player:
         self.weapon_damage = {
             "⛏": 40,
             "🔫": 30,
-            "💣": 30,
             "🗡": 40,
             "🏹": 30,
             "🛠": 40
@@ -57,21 +56,27 @@ class Player:
                 print(item)
 
     def attack(self, monster):
-        move, mouth = Mediapipe.capture_look()
+        move, mouth, arm = Mediapipe.capture_look()
         if mouth:
-            print("Opciones de arma:")
-            for i, weapon in enumerate(self.arms_inventory):
-                print(f"{i + 1}. {weapon}")
+            self.select_arm(monster)
 
-            selected_option = input("Selecciona el número del arma a utilizar: ")
-            if selected_option.isdigit() and 1 <= int(selected_option) <= len(self.arms_inventory):
-                selected_weapon = self.arms_inventory[int(selected_option) - 1]
-                damage = self.weapon_damage.get(selected_weapon, 0)
-                monster.life -= damage
-                print(f"Atacaste al monstruo con {selected_weapon} y le quitaste {damage} de vida.")
-                self.arms_inventory.remove(selected_weapon)  # Eliminar el arma del inventario del jugador
-            else:
-                print("Opción de arma inválida.")
+    def select_arm(self, monster):
+        print("Opciones de arma: (Para elegir una comience con el puño para (1)y vaya alzando los dedos consecutivamente para otras")
+        for i, weapon in enumerate(self.arms_inventory):
+            print(f"{i + 1}. {weapon}")
+        move, mouth, arm = Mediapipe.capture_look()
+        selected_option = arm
+        if 1 <= int(selected_option) <= len(self.arms_inventory):
+            selected_weapon = self.arms_inventory[int(selected_option) - 1]
+            damage = self.weapon_damage.get(selected_weapon, 0)
+            monster.life -= damage
+            print(f"Atacaste al monstruo con {selected_weapon} y le quitaste {damage} de vida.")
+            self.arms_inventory.remove(selected_weapon)  # Eliminar el arma del inventario del jugador
+        else:
+            print("Opción de arma inválida.")
+
+
+
 
 
     def check_attack(self,monster):

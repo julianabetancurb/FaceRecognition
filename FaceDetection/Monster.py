@@ -25,8 +25,6 @@ class Monster:
                 if item in game_map.food:
                     self.life += 20  # Aumentar la vida del monstruo cuando cae en una casilla con comida
                     game_map.matrix[new_row][new_col] = "-"  # Reemplazar la nueva celda por "-"
-                elif item in game_map.arms:
-                    game_map.matrix[new_row][new_col] = item
                 elif self.row == player.row and self.col == player.col:
                     print("El mountro a atacado al jugador y le ha quitado 25 de vida!!!")
                     player.life -= 25  # Restar 25 de vida al jugador cuando el monstruo y el jugador están en la misma celda
